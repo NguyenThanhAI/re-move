@@ -84,15 +84,19 @@ def evaluate(exp_name,
 
         # iterating through the data loader
         for batch_idx, item in tqdm(enumerate(test_loader)):
-            # sending the items to the proper device
-            item = handle_device(item, device)
+            try:
+                # sending the items to the proper device
+                item = handle_device(item, device)
 
-            # forward pass of the model
-            # obtaining the embeddings of each item in the batch
-            emb = model(item)
+                # forward pass of the model
+                # obtaining the embeddings of each item in the batch
+                emb = model(item)
 
-            # appending the current embedding to the collection of embeddings
-            embed_all = torch.cat((embed_all, emb))
+                # appending the current embedding to the collection of embeddings
+                embed_all = torch.cat((embed_all, emb))
+            except Exception as e:
+                print("Error: {}, input shape: {}".format(e, item.shape))
+                continue
 
         embed_all = F.normalize(embed_all, p=2, dim=1)
 
