@@ -46,10 +46,10 @@ def evaluate(exp_name,
     print("Number feature files: {}".format(len(file_list)))
 
     data = []
-    name = list(map(lambda x: os.path.splitext(os.path.basename(x))[0], file_list))
+    name = list(map(lambda x: os.path.splitext(os.path.relpath(data_dir, x))[0], file_list))
     print("name: {}".format(name))
-    image_with_index_list = dict(zip(name, range(len(name))))
-    print("image_with_index_list: {}".format(image_with_index_list))
+    #image_with_index_list = dict(zip(name, range(len(name))))
+    #print("image_with_index_list: {}".format(image_with_index_list))
 
     for file in tqdm(file_list):
         temp_crema = dd.io.load(file)["crema"]
@@ -76,6 +76,8 @@ def evaluate(exp_name,
     # sending the model to gpu, if available
     model.to(device)
 
+    remove_items = []
+
     with torch.no_grad():  # disabling gradient tracking
         model.eval()  # setting the model to evaluation mode
 
@@ -95,8 +97,13 @@ def evaluate(exp_name,
                 # appending the current embedding to the collection of embeddings
                 embed_all = torch.cat((embed_all, emb))
             except Exception as e:
-                print("Error: {}, input shape: {}".format(e, item.shape))
+                print("Error: {}, input shape: {}, index".format(e, item.shape, batch_idx))
+                remove_items.append(name[batch_idx])
                 continue
+        for re_item in remove_items:
+            name.remove(re_item)
+            print("name length: {}".format(len(name)))
+        image_with_index_list = dict(zip(name, range(len(name))))
 
         embed_all = F.normalize(embed_all, p=2, dim=1)
 
@@ -273,6 +280,7 @@ if __name__ == '__main__':
     print("Embedding shape: {}".format(embed_all.shape))
 
     image_with_index_list = {v: k for k, v in image_with_index_list.items()}
+    print("image_with_index_list: {}".format(len(image_with_index_list.keys())))
 
     if not os.path.exists(args.save_dir):
         os.makedirs(args.save_dir, exist_ok=True)
