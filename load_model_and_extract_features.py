@@ -46,7 +46,7 @@ def evaluate(exp_name,
     print("Number feature files: {}".format(len(file_list)))
 
     data = []
-    name = list(map(lambda x: os.path.splitext(os.path.relpath(data_dir, x))[0], file_list))
+    name = list(map(lambda x: os.path.splitext(os.path.relpath(x, data_dir))[0], file_list))
     print("name: {}".format(name))
     #image_with_index_list = dict(zip(name, range(len(name))))
     #print("image_with_index_list: {}".format(image_with_index_list))
