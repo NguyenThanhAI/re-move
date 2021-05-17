@@ -312,12 +312,13 @@ if __name__ == '__main__':
     index.add(index_feature)
     print(index.is_trained, index.ntotal)
 
-    distances, indices = index.query(embed_all, 9)
+    distances, indices = index.search(embed_all, args.num_nearest)
 
     audio_to_nearest_neighbors = {}
 
     for i in indices.shape[0]:
         query_audio = audio_files[i]
+        print("song: {}, {}, i: {}, index: {}".format(audio_files[i], query_audio, i, indices[i]))
         nearest_neigbors = dict(zip(range(1, indices.shape[1] + 1), map(lambda x: image_with_index_list[x], indices[i])))
         audio_to_nearest_neighbors[query_audio] = nearest_neigbors
 
