@@ -231,7 +231,8 @@ if __name__ == '__main__':
     params = {"sample_rate": 44100,
               "input_audio_format": "." + args.audio_format,
               "downsample_audio": False,
-              "downsample_factor": 2}
+              "downsample_factor": 2,
+              "endtime": None}
 
     feature = AudioFeatures(sample_rate=params["sample_rate"])
 
