@@ -224,7 +224,7 @@ if __name__ == '__main__':
                 val = val.replace('.', '-')
                 experiment_name = '{}_{}_{}'.format(experiment_name, cfg['abbr'][key], val)
 
-    audio_files = enumerate_mp3_files(data_dir=args.audio_dir)
+    audio_files = enumerate_mp3_files(data_dir=args.audio_dir, audio_format=args.audio_format)
     audio_files.sort(key=lambda x: os.path.splitext(os.path.basename(x))[0])
     print("Number audio files: {}".format(len(audio_files)))
 
