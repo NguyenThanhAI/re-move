@@ -251,7 +251,7 @@ if __name__ == '__main__':
         crema_feature_list.append(torch.cat((temp_tensor, temp_tensor))[:23].unsqueeze(0))
 
     test_set = FullSizeInstanceDataset(data=crema_feature_list)
-    test_loader = DataLoader(test_set, batch_size=1, shuffle=True)
+    test_loader = DataLoader(test_set, batch_size=1, shuffle=False)
 
     print("Initializing model")
 
