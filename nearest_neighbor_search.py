@@ -203,6 +203,9 @@ if __name__ == '__main__':
     parser.add_argument("--num_nearest",
                         type=int,
                         default=9)
+    parser.add_argument("--num_query",
+                        type=int,
+                        default=None)
 
     args = parser.parse_args()
 
@@ -227,6 +230,10 @@ if __name__ == '__main__':
     audio_files = enumerate_mp3_files(data_dir=args.audio_dir, audio_format=args.audio_format)
     audio_files.sort(key=lambda x: os.path.splitext(os.path.basename(x))[0])
     print("Number audio files: {}".format(len(audio_files)))
+
+    num_audios = len(audio_files)
+    if num_audios > args.num_query:
+        audio_files = audio_files[:args.num_query]
 
     params = {"sample_rate": 44100,
               "input_audio_format": "." + args.audio_format,
