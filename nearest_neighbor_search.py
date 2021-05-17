@@ -316,7 +316,7 @@ if __name__ == '__main__':
 
     audio_to_nearest_neighbors = {}
 
-    for i in indices.shape[0]:
+    for i in range(indices.shape[0]):
         query_audio = audio_files[i]
         print("song: {}, {}, i: {}, index: {}".format(audio_files[i], query_audio, i, indices[i]))
         nearest_neigbors = dict(zip(range(1, indices.shape[1] + 1), map(lambda x: image_with_index_list[x], indices[i])))
